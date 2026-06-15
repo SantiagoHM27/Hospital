@@ -1,0 +1,5 @@
+package com.santiago.medicos.mappers;
+
+public class MedicoMapper {
+
+}

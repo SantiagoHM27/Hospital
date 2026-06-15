@@ -1,0 +1,5 @@
+package com.santiago.commons.mappers;
+
+public interface CommonMapper {
+
+}

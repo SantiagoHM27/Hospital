@@ -34,16 +34,17 @@ public class MedicoMapper implements CommonMapper<MedicoRequest, MedicoResponse,
         if (entidad == null) return null;
 
         return new MedicoResponse(
-                entidad.getId(),
-                String.join(" ", entidad.getNombre(),
-                        entidad.getApellidoPaterno(),
-                        entidad.getApellidoMaterno()),
-                entidad.getEdad(),
-                entidad.getEmail(),
-                entidad.getCedulaProfesional(),
-                entidad.getEspecialidad().getDescripcion(),
-                entidad.getDisponibilidad().getDescripcion(),
-                
+        		 entidad.getId(),
+        	        String.join(" ", entidad.getNombre(),
+        	                entidad.getApellidoPaterno(),
+        	                entidad.getApellidoMaterno()),
+        	        entidad.getEdad(),
+        	        entidad.getEmail(),
+        	        entidad.getTelefono(),                           // ← faltaba
+        	        entidad.getCedulaProfesional(),
+        	        entidad.getEspecialidad().getDescripcion(),
+        	        entidad.getDisponibilidad().getDescripcion(),
+        	        null 
         );
     }
 }

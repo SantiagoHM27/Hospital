@@ -1,5 +1,0 @@
-package com.santiago.commons.services;
-
-public interface CrudService {
-
-}

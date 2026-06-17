@@ -17,13 +17,13 @@ public class MedicoMapper implements CommonMapper<MedicoRequest, MedicoResponse,
         if (request == null) return null;
 
         return Medico.builder()
-                .nombre(request.nombre())
-                .apellidoPaterno(request.apellidoPaterno())
-                .apellidoMaterno(request.apellidoMaterno())
+                .nombre(request.nombre().trim())
+                .apellidoPaterno(request.apellidoPaterno().trim())
+                .apellidoMaterno(request.apellidoMaterno().trim())
                 .edad(request.edad())
-                .email(request.email())
-                .telefono(request.telefono())
-                .cedulaProfesional(request.cedulaProfesional())
+                .email(request.email().trim())
+                .telefono(request.telefono().trim())
+                .cedulaProfesional(request.cedulaProfesional().trim())
                 .disponibilidad(DisponibilidadMedico.DISPONIBLE)
                 .estadoRegistro(EstadoRegistro.ACTIVO)
                 .build();
@@ -40,11 +40,10 @@ public class MedicoMapper implements CommonMapper<MedicoRequest, MedicoResponse,
                         entidad.getApellidoMaterno()),
                 entidad.getEdad(),
                 entidad.getEmail(),
-                entidad.getTelefono(),
                 entidad.getCedulaProfesional(),
                 entidad.getEspecialidad().getDescripcion(),
                 entidad.getDisponibilidad().getDescripcion(),
-                entidad.getDisponibilidad().getCodigo()
+                
         );
     }
 }

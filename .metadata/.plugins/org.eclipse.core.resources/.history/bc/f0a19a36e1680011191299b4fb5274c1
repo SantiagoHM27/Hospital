@@ -1,5 +1,0 @@
-package com.santiago.commons.enums;
-
-public enum EspecialidadMedico {
-
-}

@@ -17,7 +17,7 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
 	
 	 List<Medico>findByEstadoRegistro(EstadoRegistro estadoRegistro);
 	 
-	Optional<Medico> findByIdAndEstadoRegistrado(Long id, EstadoRegistro estadoRegistro);
+	Optional<Medico> findByIdAndEstadoRegistro(Long id, EstadoRegistro estadoRegistro);
 
     boolean existsByEmailIgnoreCaseAndEstadoRegistro(String email, EstadoRegistro estadoRegistro);
 

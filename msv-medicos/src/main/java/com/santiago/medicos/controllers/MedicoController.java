@@ -5,6 +5,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.santiago.commons.controllers.CommonController;
@@ -15,6 +16,7 @@ import com.santiago.medicos.services.MedicoService;
 import jakarta.validation.constraints.Positive;
 
 @RestController
+@RequestMapping("/api/medicos")
 @Validated
 public class MedicoController extends CommonController<MedicoRequest, MedicoResponse, MedicoService> {
 

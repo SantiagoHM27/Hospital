@@ -2,7 +2,7 @@ package com.santiago.pacientes.entities;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 
 import com.santiago.commons.enums.EstadoRegistro;
 import com.santiago.commons.utils.StringCustomUtils;
@@ -73,6 +73,34 @@ public class Paciente {
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private EstadoRegistro estadoRegistro;
     
+    
+    public static Paciente crear(String nombre, String apellidoPaterno, String apellidoMaterno,
+            Short edad, Double peso, Double estatura, String email,
+            String telefono, String direccion) {
+
+        Paciente paciente = Paciente.builder()
+                .estadoRegistro(EstadoRegistro.ACTIVO)
+                .build();
+
+        paciente.validarDatos(nombre, apellidoPaterno, apellidoMaterno, email, telefono,
+                direccion, edad, peso, estatura);
+
+        paciente.nombre = nombre.trim();
+        paciente.apellidoPaterno = apellidoPaterno.trim();
+        paciente.apellidoMaterno = apellidoMaterno.trim();
+        paciente.edad = edad;
+        paciente.peso = peso;
+        paciente.estatura = estatura;
+        paciente.asignarImc();
+        paciente.email = email.toLowerCase().trim();
+        paciente.telefono = telefono.trim();
+        paciente.direccion = direccion.trim();
+        paciente.asignarNumExpediente();
+
+        return paciente;
+    }
+    
+    
     public void actualizar(String nombre, String apellidoPaterno, String apellidoMaterno,
             Short edad, Double peso, Double estatura, String email,
             String telefono, String direccion) {
@@ -130,6 +158,7 @@ public class Paciente {
     public void eliminar() {
     	
     	validarNoEliminado();
+    	 this.estadoRegistro = EstadoRegistro.ELIMINADO;
     	
     	if(telefono == null) {
     		this.numExpediente = null;

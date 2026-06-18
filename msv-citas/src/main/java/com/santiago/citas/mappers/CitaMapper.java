@@ -1,12 +1,12 @@
 package com.santiago.citas.mappers;
 
+import org.springframework.stereotype.Component;
 import com.santiago.citas.dto.CitaRequest;
 import com.santiago.citas.dto.CitaResponse;
 import com.santiago.citas.entities.Cita;
-import com.santiago.commons.dto.DatosMedico;
 import com.santiago.commons.dto.MedicoResponse;
 import com.santiago.commons.mappers.CommonMapper;
-
+@Component
 public class CitaMapper implements CommonMapper<CitaRequest, CitaResponse, Cita> {
 	
 	@Override
@@ -49,15 +49,4 @@ public class CitaMapper implements CommonMapper<CitaRequest, CitaResponse, Cita>
 				entidad.getEstadoCita().getDescripcion());
 
 	}
-	
-	private DatosMedico medicoResponseADatosMedico (MedicoResponse medico) {
-		if (medico == null) return null;
-		
-		return new DatosMedico(
-				medico.nombre(),
-				medico.cedulaProfesional(),
-				medico.especialidad());
-	}
-
-
 }

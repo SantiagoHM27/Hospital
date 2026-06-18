@@ -155,9 +155,67 @@ public class CitasServiceImpl  implements CitaService{
 					"No se puede registrar la cita ya que el apciente solo puede tener una"
 					+ "cita activa con los estados de: " + ESTADOS_INVALIDOS_REGISTROS_ASIGNADOS);
 	}
+
+	@Override
+	public void actualizarEstadoCita(Long idCita, Long idEstadoCita) {
+		Cita cita = obtenerCitaActivaOException(idCita);
+		
+		log.info("Actualizando estado de la cita con id: {}", idCita);
+		
+		cita.actualizarEstadoCita(EstadoCita.obtenerEstadoCitaPorCodigo(idEstadoCita));
+		
+		cambiarDisponibilidadMedicoSegunEstadoCita(cita.getIdMedico(), cita.getEstadoCita());
+		
+		log.info("Estado de la cita {} actualizado correctamente", cita.getId());
+		
+	}
+
+	@Override
+    public void medicoTieneCitasAsignadas(Long idMedico) {
+
+        log.info("Validando si el médico tiene una cita activa con los estados: {}", 
+                ESTADOS_INVALIDOS_REGISTROS_ASIGNADOS);
+
+        boolean tieneCitas = citaRepository
+                .existsByIdMedicoAndEstadoRegistroAndEstadoCitaIn(
+                        idMedico, 
+                        EstadoRegistro.ACTIVO, 
+                        ESTADOS_INVALIDOS_REGISTROS_ASIGNADOS);
+
+        if (tieneCitas) {
+            throw new EntidadRelacionadaException(
+                    "No se puede modificar el médico ya que tiene citas con estados: "
+                    + ESTADOS_INVALIDOS_REGISTROS_ASIGNADOS);
+        }
+    }
 	
+	private void cambiarDisponibilidadMedico(Long idMedico, Long idDisponibilidad) {
+		log.info("Actualizando disponibilidad de medico con id: {} a {}",
+				idMedico, DisponibilidadMedico.obtenerDisponibilidadPorCodigo(idDisponibilidad));
+		
+		medicoClient.actualizarDisponibilidadMedico(idMedico, idDisponibilidad);
+	}
 	
+	private void cambiarDisponibilidadMedicoSegunEstadoCita(Long idMedico, EstadoCita estadoCita) {
+		switch (estadoCita) {
+			
+		case PENDIENTE, CONFIRMADA ->
+		cambiarDisponibilidadMedico(idMedico, DisponibilidadMedico.NO_DISPONIBLE.getCodigo());
+		
+		case EN_CURSO ->
+		cambiarDisponibilidadMedico(idMedico, DisponibilidadMedico.EN_CONSULTA.getCodigo());
+		
+		case FINALIZADA, CANCELADA ->
+		cambiarDisponibilidadMedico(idMedico, DisponibilidadMedico.DISPONIBLE.getCodigo());
+		
+		}
+	}
 	
-	
+	public Boolean medicoTieneCitasConfirmadasOEnCurso(Long idMedico) {
+	    return citaRepository.existsByIdMedicoAndEstadoCitaIn(
+	        idMedico,
+	        List.of(EstadoCita.CONFIRMADA, EstadoCita.EN_CURSO)
+	    );
+	}
 
 }

@@ -7,11 +7,20 @@ spring:
   cloud:
     gateway:
       routes:
-        # Ruta para el Servicio A
         - id: msv-citas
           uri: lb://msv-citas
           predicates:
             - Path=/api/citas/**
+
+        - id: msv-medicos
+          uri: lb://msv-medicos
+          predicates:
+            - Path=/api/medicos/**
+
+        - id: msv-pacientes
+          uri: lb://msv-pacientes
+          predicates:
+            - Path=/api/pacientes/**
 
 eureka:
   client:

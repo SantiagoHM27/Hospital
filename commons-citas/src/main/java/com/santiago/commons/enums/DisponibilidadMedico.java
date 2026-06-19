@@ -1,0 +1,32 @@
+package com.santiago.commons.enums;
+
+import com.santiago.commons.exceptions.RecursoNoEncontradoException;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@AllArgsConstructor
+@Getter
+public enum DisponibilidadMedico {
+	
+    DISPONIBLE(1L, "Disponible para atender pacientes"),
+    EN_CONSULTA(2L, "Atendiendo a un paciente actualmente"),
+    FUERA_DE_TURNO(3L, "No se encuentra en turno"),
+    DE_GUARDIA(4L, "Disponible bajo guardia"),
+    NO_DISPONIBLE(5L, "No disponible por el momento");
+	
+	private final Long codigo;
+
+    private final String descripcion;
+    
+    public static DisponibilidadMedico obtenerDisponibilidadPorCodigo(Long codigo) {
+        for (DisponibilidadMedico d : values()) {
+            if (d.codigo.equals(codigo)) {
+                return d;
+            }
+        }
+        throw new RecursoNoEncontradoException("Código de disponibilidad no válido: " + codigo);
+    }
+
+}
